@@ -1,0 +1,39 @@
+on:
+    workflow_call:
+        inputs:
+            confirm-destroy:
+                description: 'Type "DESTROY" to confirm instructure teardown'
+                required: true
+                type: string
+                default: 'NO'
+        secrets:
+            TF_API_TOKEN:
+                required: false
+
+jobs:
+    Destroy-infrastructure:
+        name: Deploy infrastructure using Terraform
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                shell: bash
+                
+        if: ${{ github.event.inputs.confirm-destroy == 'DESTROY'}}
+        steps:
+        #Checkout the repository to the Github Actions runner
+            - name: Checkout repository
+              uses: actions/checkout@v4
+            
+        #Install Terraform CLI
+            - name: Install Terraform
+              uses: hashicorp/setup-terraform@v3
+              with:
+                 cli_config_credentials_token: ${{ secrets.TF_API_TOKEN}}
+        
+        #Initialize Terraform
+            - name: Initialize Terraform
+              run: terraform init
+        
+        #Destroy Terraform-manged infrastructure
+            - name: Destroy Terraform-managed infrastructure
+              run: terraform destroy -auto-approve
