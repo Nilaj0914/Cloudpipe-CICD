@@ -13,6 +13,7 @@ jobs:
         defaults:
             run:
                 shell: bash
+                working-directory: ./Infrastructure
         steps:
         #Checkout the repository to the Github Actions runner
             - name: Checkout repository
