@@ -1,5 +1,9 @@
 on:
     workflow_call:
+        inputs:
+            working-directory:
+                required: true
+                type: string
         secrets:
             TF_API_TOKEN:
                 required: false
@@ -13,7 +17,7 @@ jobs:
         defaults:
             run:
                 shell: bash
-                working-directory: ./Infrastructure
+                working-directory: ${{ inputs.working-directory }}
         steps:
         #Checkout the repository to the Github Actions runner
             - name: Checkout repository
