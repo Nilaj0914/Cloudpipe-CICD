@@ -29,6 +29,14 @@ jobs:
         #Checkout the repository to the Github Actions runner
             - name: Checkout repository
               uses: actions/checkout@v4
+              
+        # Configure AWS credentials using OIDC
+            - name: Configure AWS credentials
+              uses: aws-actions/configure-aws-credentials@v4
+              with:
+                role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+                role-session-name: GitHubActionsDeployInfra
+                aws-region: ap-south-1
             
         #Install Terraform CLI
             - name: Install Terraform
